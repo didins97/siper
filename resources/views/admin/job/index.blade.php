@@ -95,7 +95,7 @@
 
     <script>
         $(document).ready(function() {
-            $('.delete').click(function(e) {
+            $(document).on('click', '.delete', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
                 Swal.fire({
@@ -126,9 +126,7 @@
                 })
             })
 
-            $('.edit').click(function (e) {
-                e.preventDefault();
-
+            $(document).on('click', '.edit', function(e) {
                 var id = $(this).data('id');
                 $.ajax({
                     type: "GET",
@@ -144,7 +142,7 @@
                         $('#statusModal').modal('show');
                     }
                 });
-            });
+            })
         });
     </script>
 @endpush

@@ -10,7 +10,8 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             {{-- button cetak, print, pdf, excel --}}
-            <a href="javascript:void(0);" onclick="window.print();" class="btn btn-secondary float-left mr-1">Print <i class="fas fa-print"></i></a>
+            <a href="javascript:void(0);" onclick="window.print();" class="btn btn-secondary float-left mr-1">Print <i
+                    class="fas fa-print"></i></a>
             <a href="{{ route('admin.products-pdf') }}" class="btn btn-danger float-left mr-1" target="_blank"> PDF <i
                     class="fas fa-file-pdf"></i></a>
             <a href="{{ route('admin.products-excel') }}" class="btn btn-success float-left">Excel <i
@@ -178,7 +179,7 @@
                 formCounterEdit--;
             });
 
-            $('.edit').click(function() {
+            $(document).on('click', '.edit', function(e) {
                 var id = $(this).data('id');
                 console.log(id);
                 $.ajax({
@@ -234,8 +235,7 @@
                 $('#editItem').modal('show');
             })
 
-            $('.delete').click(function(e) {
-                e.preventDefault();
+            $(document).on('click', '.delete', function(e) {
                 var id = $(this).data('id');
                 Swal.fire({
                     title: 'Apa anda yakin untuk menghapus ini?',

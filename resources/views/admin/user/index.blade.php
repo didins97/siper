@@ -10,8 +10,8 @@
     <div class="row">
         <div class="col-8">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Daftar User</h6>
+                <div class="card-header py-3" id="mainCardHeader">
+                    <h6 class="m-0 font-weight-bold text-primary float-left">Daftar User</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive-sm">
@@ -34,17 +34,19 @@
                                         <td>
                                             @switch($item->role)
                                                 @case('admin')
-                                                {{-- badge --}}
-                                                <span class="badge badge-primary">Admin</span>
-                                                    @break
-                                                @case('user')
-                                                <span class="badge badge-success">User</span>
-                                                    @break
-                                                @case('operator')
-                                                <span class="badge badge-warning">Operator</span>
-                                                    @break
-                                                @default
+                                                    {{-- badge --}}
+                                                    <span class="badge badge-primary">Admin</span>
+                                                @break
 
+                                                @case('user')
+                                                    <span class="badge badge-success">User</span>
+                                                @break
+
+                                                @case('operator')
+                                                    <span class="badge badge-warning">Operator</span>
+                                                @break
+
+                                                @default
                                             @endswitch
                                         </td>
                                         <td>
@@ -70,27 +72,29 @@
         </div>
         <div class="col-4">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
+                <div class="card-header">
                     <h6 class="m-0 font-weight-bold text-primary">Tambah User</h6>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('users.store') }}" method="POST" id="formUser">
                         @csrf
                         <div class="form-group">
-                          <label for="name">Nama</label>
-                          <input type="text" class="form-control" id="name" aria-describedby="nameHelp" name="name">
+                            <label for="name">Nama</label>
+                            <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
+                                name="name">
                         </div>
                         <div class="form-group">
-                          <label for="email">Email address</label>
-                          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                name="email">
                         </div>
-                        <div class="form-group">
-                          <label for="password">Password</label>
-                          <input type="password" class="form-control" id="password" name="password">
+                        <div class="form-group" id="passwordContainer">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password">
                         </div>
-                        <div class="form-group">
-                          <label for="confirmPassword">Password Konfirmasi</label>
-                          <input type="password" class="form-control" id="confirmPassword" name="password_confirmation">
+                        <div class="form-group" id="passwordConfirmContainer">
+                            <label for="confirmPassword">Password Konfirmasi</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="password_confirmation">
                         </div>
                         <div class="form-group">
                             <label for="role">Level</label>
@@ -101,7 +105,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Simpan</button>
-                      </form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -123,9 +127,20 @@
     <script src="{{ asset('assets') }}/js/demo/datatables-demo.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $('.edit').on('click', function () {
+        $(document).ready(function() {
+            $('.edit').on('click', function() {
                 let id = $(this).data('id');
+
+                $('#passwordContainer').remove();
+                $('#passwordConfirmContainer').remove();
+
+                if ($('#formUser input[name="_method"]').length === 0) {
+                    $('#formUser').append('<input type="hidden" name="_method" value="PUT">');
+                }
+
+                if ($('#btnAdd').length === 0) {
+                    $('#mainCardHeader').append('<button type="button" class="btn btn-primary float-right" id="btnAdd"><i class="fas fa-plus"></i> Tambah User</button>');
+                }
 
                 $.ajax({
                     type: "GET",
@@ -138,6 +153,10 @@
                         $('#formUser').attr('action', `/admin/users/${response.id}`);
                     }
                 });
+            })
+
+            $(document).on('click', '#btnAdd', function() {
+                location.reload();
             })
 
             $('.delete').click(function(e) {

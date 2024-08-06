@@ -83,7 +83,6 @@ class OrderController extends Controller
         $order = \App\Models\Order::find($id);
         $order->status = $request->status;
         $order->expected_date = $request->expected_date;
-        $order->priority = $request->priority;
         $order->save();
 
         if ($request->status == 'inprogress') {
