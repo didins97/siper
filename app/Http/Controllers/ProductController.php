@@ -116,7 +116,8 @@ class ProductController extends Controller
             'sizes' => json_encode($request->sizes),
             'desc' => $request->desc,
             'image' => $request->hasFile('image') ? upload_file('app/public/images/products', $request->file('image')) : $product->image,
-            'is_active' => $request->is_active ? 1 : 0
+            'is_active' => $request->is_active ? 1 : 0,
+            'is_featured' => $request->is_featured ? 1 : 0
         ];
 
         $product->update($data);
@@ -166,5 +167,13 @@ class ProductController extends Controller
         ];
 
         return $data;
+    }
+
+    public function chooseItemsIndex()
+    {
+        $query = Product::orderBy('created_at', 'desc');
+
+        $data = $query->where('is_active', true)->get();
+        return view('admin.choose-item.index', compact('data'));
     }
 }

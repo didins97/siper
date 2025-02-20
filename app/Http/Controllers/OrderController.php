@@ -63,13 +63,18 @@ class OrderController extends Controller
         $data['product_id'] = $id;
         $data['total_amount'] = $data['qty'] * $data['price'];
         $data['status'] = 'pending';
+        $data['order_type'] = auth()->user()->role != 'user' ? 'offline' : 'online';
 
         // run notification
-        $request->user()->notify(new OrderWhatshappNotfication());
+        // $request->user()->notify(new OrderWhatshappNotfication());
 
         $order = \App\Models\Order::create($data);
 
-        return redirect()->route('user.orders.show', $order->id);
+        if (auth()->user()->role == 'user') {
+            return redirect()->route('user.orders.show', $order->id);
+        } else {
+            return redirect()->route('admin.orders.show', $order->id);
+        }
     }
 
     public function updateStatus(Request $request, $id)

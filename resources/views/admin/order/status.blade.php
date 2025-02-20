@@ -14,13 +14,35 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="status">Pilih Status:</label>
-                        <select class="form-control" id="status" name="status">
+                        <select class="form-control" id="status" name="status" onchange="togglePriority()">
                             <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Menunggu</option>
                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Selesai</option>
                             <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                             <option value="inprogress" {{ $order->status == 'inprogress' ? 'selected' : '' }}>Proses</option>
                         </select>
                     </div>
+
+                    {{-- <div class="form-group">
+                        <label for="dateExpect">Perkiraan Waktu Selesai</label>
+                        <input type="date" class="form-control" id="dateExpect" name="expected_date" value="{{ $order->expected_date }}">
+                    </div>
+
+                    <!-- Priority -->
+                    <div class="form-group" id="prioritySection" style="display: none;">
+                        <label class="mb-2 fw-bold">Priority:</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="primary" name="priority" value="primary"
+                                    {{ $order->priority == 'primary' ? 'checked' : '' }}>
+                                <label class="form-check-label btn btn-outline-primary" for="primary">Primary</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="secondary" name="priority" value="secondary"
+                                    {{ $order->priority == 'secondary' ? 'checked' : '' }}>
+                                <label class="form-check-label btn btn-outline-warning" for="secondary">Secondary</label>
+                            </div>
+                        </div>
+                    </div> --}}
                     <div id="additionalFields"></div>
                     <button type="submit" class="btn btn-primary float-right">Simpan</button>
                 </form>

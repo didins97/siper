@@ -17,7 +17,7 @@ class DashboardController extends Controller
 
         $totalMonthlyIncome = Order::completedLastMonth()->sum('total_amount');
         $totalItems = Product::isActive()->count();
-        $totalUser = User::where('role', 'user')->count();
+        $totalUser = User::count();
         $progressCompletedJobs = $totalJobs > 0 ? ($completedJobs / $totalJobs) * 100 : 0;
 
         return view('admin.index', compact('totalMonthlyIncome', 'totalUser', 'progressCompletedJobs', 'totalItems'));

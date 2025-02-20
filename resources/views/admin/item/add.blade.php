@@ -65,7 +65,13 @@
                     </div>
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="customSwitch1" name="is_active" checked>
-                        <label class="custom-control-label" for="customSwitch1">Tampilkan Item</label>
+                        <label class="custom-control-label" for="customSwitch1">Publish</label>
+                        <small class="form-text text-muted">Jangan Centang jika belum ingin ditampilkan</small>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="editCustomSwitch2" name="is_featured">
+                        <label class="custom-control-label" for="editCustomSwitch2">Produk Unggulan</label>
+                        <small class="form-text text-muted">Centang jika produk ini akan ditampilkan di beranda.</small>
                     </div>
                 </div>
                 <div class="modal-footer">

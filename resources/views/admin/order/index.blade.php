@@ -10,11 +10,13 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             {{-- button cetak, print, pdf, excel --}}
-            <a href="javascript:void(0);" onclick="window.print();" class="btn btn-secondary float-left mr-1">Print <i class="fas fa-print"></i></a>
+            <a href="javascript:void(0);" onclick="window.print();" class="btn btn-secondary float-left mr-1">Print <i
+                    class="fas fa-print"></i></a>
             <a href="{{ route('admin.orders-pdf') }}" class="btn btn-danger float-left mr-1" target="_blank"> PDF <i
                     class="fas fa-file-pdf"></i></a>
             <a href="{{ route('admin.orders-excel') }}" class="btn btn-success float-left">Excel <i
                     class="fas fa-file-excel"></i></a>
+            <a href="{{ route('admin.choose-items.index') }}" class="btn btn-primary float-right"> Pesan Offline <i class="fas fa-arrow-right"></i> </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -25,6 +27,9 @@
                             <th>No Order</th>
                             <th>Nama Pemesan</th>
                             <th>Jenis Item</th>
+                            @if (auth()->user()->role == 'admin')
+                                <th>Pesan</th>
+                            @endif
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -36,6 +41,15 @@
                                 <td>{{ $item->order_number }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->product->name }}</td>
+                                @if (auth()->user()->role == 'admin')
+                                    <td>
+                                        @if ($item->order_type == 'online')
+                                            <span class="badge badge-success">Online</span>
+                                        @else
+                                            <span class="badge badge-info">Offline</span>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td>
                                     @switch($item->status)
                                         @case('pending')
@@ -92,38 +106,5 @@
         integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous">
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('.delete').click(function(e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                Swal.fire({
-                    title: 'Apa anda yakin untuk menghapus ini?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6777ef',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'DELETE',
-                            url: `/admin/orders/${id}`,
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(results) {
-                                if (results.success === true) {
-                                    Swal.fire("Done!", results.message, "success");
-                                    location.reload();
-                                } else {
-                                    Swal.fire("Error!", results.message, "error");
-                                }
-                            }
-                        });
-                    }
-                })
-            })
-        });
-    </script>
+    <script src="{{ asset('assets') }}/js/user/list-order.js"></script>
 @endpush

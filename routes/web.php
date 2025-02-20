@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
@@ -61,6 +59,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     # Chart
     Route::get('/job-pie-chart', [App\Http\Controllers\DashboardController::class, 'jobPieChart'])->name('admin.job-pie-chart');
     Route::get('/order-area-chart', [App\Http\Controllers\DashboardController::class, 'orderAreaChart'])->name('admin.order-area-chart');
+
+    #Offline Order
+    Route::get('/choose-items', [App\Http\Controllers\ProductController::class, 'chooseItemsIndex'])->name('admin.choose-items.index');
+    Route::get('/choose-items/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('admin.choose-items.show');
+    Route::get('/choose-items/sizes-prices/{id}', [App\Http\Controllers\ProductController::class, 'GetSizesPrices'])->name('admin.sizes-prices');
+    Route::post('create-order/{productId}', [App\Http\Controllers\OrderController::class, 'createOrder'])->name('admin.create-order');
 });
 
 // Rute untuk Operator
@@ -86,7 +90,7 @@ Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
     Route::get('/items/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('user.items.show');
     Route::get('/items/sizes-prices/{id}', [App\Http\Controllers\ProductController::class, 'GetSizesPrices'])->name('user.sizes-prices');
 
-    Route::get('orders', [App\Http\Controllers\OrderController::class, 'index'])->name('user.orders');
+    Route::get('orders', [App\Http\Controllers\OrderController::class, 'index'])->name('user.orders.index');
     Route::get('orders/{id}', [App\Http\Controllers\OrderController::class, 'show'])->name('user.orders.show');
     Route::post('create-order/{productId}', [App\Http\Controllers\OrderController::class, 'createOrder'])->name('user.create-order');
     Route::put('orders/{id}', [App\Http\Controllers\OrderController::class, 'cancel'])->name('user.orders.cancel');

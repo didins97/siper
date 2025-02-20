@@ -30,7 +30,7 @@
                             <button type="button" class="btn btn-primary btn-order" data-id="{{ $item->id }}">
                                 <i class="fas fa-shopping-cart"></i> Pesan
                             </button>
-                            <a href="{{ route('user.items.show', $item->id) }}"
+                            <a href="{{ route('admin.choose-items.show', $item->id) }}"
                                 class="btn btn-outline-secondary btn-detail">
                                 <i class="fas fa-info-circle"></i> Detail
                             </a>
@@ -43,7 +43,7 @@
 @endsection
 
 @section('modal')
-    @include('user.item.order')
+    @include('admin.choose-item.order')
 @endsection
 
 @push('scripts')

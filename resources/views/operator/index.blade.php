@@ -42,7 +42,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
                             </div>
                             <div class="col-auto">
-                                <h5>{{ App\Models\PrintingJob::where('status', 'inprogress')->count() }}</h5>
+                                <h5>{{ App\Models\PrintingJob::where('status', 'processing')->count() }}</h5>
                             </div>
                         </div>
                     </div>

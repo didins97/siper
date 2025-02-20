@@ -79,38 +79,5 @@
         integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous">
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('.delete').click(function(e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                Swal.fire({
-                    title: 'Apa anda yakin untuk menghapus ini?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6777ef',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'DELETE',
-                            url: `/admin/orders/${id}`,
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(results) {
-                                if (results.success === true) {
-                                    Swal.fire("Done!", results.message, "success");
-                                    location.reload();
-                                } else {
-                                    Swal.fire("Error!", results.message, "error");
-                                }
-                            }
-                        });
-                    }
-                })
-            })
-        });
-    </script>
+    <script src="{{ asset('assets') }}/js/user/list-order.js"></script>
 @endpush

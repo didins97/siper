@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Punggawa - Printing</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('assets') }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -104,9 +104,9 @@
             </div>
 
             @if (auth()->user()->role == 'admin' || auth()->user()->role == 'user')
-                <li class="nav-item {{ Request::segment(2) == 'orders' ? 'active' : '' }}">
+                <li class="nav-item {{ Request::segment(2) == 'orders' || Request::segment(2) == 'choose-items' ? 'active' : '' }}">
                     <a class="nav-link"
-                        href="{{ auth()->user()->role == 'admin' ? route('admin.orders.index') : '' }}">
+                        href="{{ auth()->user()->role == 'admin' ? route('admin.orders.index') : route('user.orders.index') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Pemesanan</span></a>
                 </li>

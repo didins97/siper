@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
+use App\Models\Product;
 
 class ProductSeeder extends Seeder
 {
@@ -14,22 +15,27 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
+        $faker = Faker::create();
 
-        // \App\Models\Product::truncate();
+        // Hapus data sebelumnya jika perlu
+        // Product::truncate();
 
-        for ($i=0; $i < 10; $i++) {
+        $productNames = ['Brosur', 'Poster', 'Spanduk', 'Kartu Nama', 'Stiker', 'Undangan', 'Banner', 'Buku Nota', 'Kalender', 'Plakat'];
+        $sizes = ['A4', 'A3', 'A5', 'F4', 'Letter'];
+        $prices = [5000, 10000, 15000, 20000, 25000];
 
-            $sizes = ['3x3', '4x4', '5x5', '6x6', '7x7', '8x8', '9x9', '10x10'];
-            $prices = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000];
+        shuffle($productNames); // Acak agar setiap run berbeda
 
-            \App\Models\Product::create([
-                'name' => $faker->word,
-                'desc' => $faker->text,
-                'image' => $faker->imageUrl(640, 480, 'animals', true),
-                'sizes' => json_encode($sizes),
-                'prices' => json_encode($prices),
-            ]);
+        foreach ($productNames as $name) {
+            Product::firstOrCreate(
+                ['name' => "Cetak $name"], // Cek apakah sudah ada
+                [
+                    'desc' => $faker->sentence(10),
+                    'image' => 'noimage.jpg', // Gambar default
+                    'sizes' => json_encode($sizes),
+                    'prices' => json_encode($prices),
+                ]
+            );
         }
     }
 }

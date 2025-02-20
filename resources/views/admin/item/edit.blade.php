@@ -29,7 +29,8 @@
                                 <div class="input-group mb-3">
                                     <input type="number" class="form-control" id="Editprice" name="prices[]">
                                     <span class="input-group-append">
-                                        <button type="button" class="btn btn-success btn-flat btn-multiple-edit"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-success btn-flat btn-multiple-edit"><i
+                                                class="fas fa-plus"></i></button>
                                     </span>
                                 </div>
                             </div>
@@ -50,8 +51,13 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12 text-center">
-                                <img class="edit-preview mb-3 text-center" src="{{ asset('assets/img/noimage.jpg') }}"
-                                    width="50%" />
+                                @if ($item->image == 'noimage.jpg')
+                                    <img class="edit-preview mb-3 text-center"
+                                        src="{{ asset('assets/img/noimage.jpg') }}" width="50%" />
+                                @else
+                                    <img class="edit-preview mb-3 text-center"
+                                        src="{{ asset('storage/images/products/' . $item->image) }}" width="50%" />
+                                @endif
                             </div>
                         </div>
                         <div class="mb-3">
@@ -63,8 +69,14 @@
                         </div>
                     </div>
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="editCustomSwitch1" name="is_active" value="1">
-                        <label class="custom-control-label" for="editCustomSwitch1">Tampilkan Item</label>
+                        <input type="checkbox" class="custom-control-input" id="publishSwitch" name="is_active" checked>
+                        <label class="custom-control-label" for="publishSwitch">Publish</label>
+                        <small class="form-text text-muted">Jangan Centang jika belum ingin ditampilkan</small>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="unggulanSwitch" name="is_featured">
+                        <label class="custom-control-label" for="unggulanSwitch">Produk Unggulan</label>
+                        <small class="form-text text-muted">Centang jika produk ini akan ditampilkan di beranda.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
