@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Models\PrintingJob;
 use Illuminate\Http\Request;
 use App\Exports\OrdersExport;
+use App\Notifications\OrderShippedNotification;
+use App\Notifications\OrderStatusNotification;
 use App\Notifications\OrderWhatshappNotfication;
 
 class OrderController extends Controller
@@ -70,6 +72,11 @@ class OrderController extends Controller
 
         $order = \App\Models\Order::create($data);
 
+        $admin = \App\Models\User::where('role', 'admin')->get();
+        foreach ($admin as $user) {
+            $user->notify(new OrderShippedNotification($order));
+        }
+
         if (auth()->user()->role == 'user') {
             return redirect()->route('user.orders.show', $order->id);
         } else {
@@ -102,6 +109,9 @@ class OrderController extends Controller
                 ]
             );
         }
+
+        $user = \App\Models\User::find($order->user_id);
+        $user->notify(new OrderStatusNotification($order));
 
         return redirect()->back();
     }

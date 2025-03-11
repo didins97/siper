@@ -39,7 +39,7 @@ $(document).ready(function() {
 
         // Update form action berdasarkan ID produk
         if (id) {
-            $('#OrderForm').attr('action', `/admin/create-order/${id}`);
+            $('#OrderForm').attr('action', `/user/create-order/${id}`);
         }
 
         // Tampilkan modal

@@ -98,3 +98,19 @@ Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
     Route::put('/profile/{id}', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('user.profile.update');
     Route::put('/password/{id}', [App\Http\Controllers\UserController::class, 'updatePassword'])->name('user.password.update');
 });
+
+Route::get('/notifications/read/{id}', function ($id) {
+    $notification = auth()->user()->notifications()->find($id);
+    if ($notification) {
+        $notification->markAsRead();
+    }
+
+    $orderId = $notification->data['order_id'];
+
+    if (auth()->user()->role != 'admin') {
+        return redirect()->route('user.orders.show', $orderId);
+    } else {
+        return redirect()->route('admin.orders.show', $orderId);
+    }
+
+})->name('notifications.read');

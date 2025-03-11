@@ -165,14 +165,48 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
+                        <!-- Notifikasi -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter Notifikasi -->
+                                @php $unreadCount = auth()->user()->unreadNotifications->count(); @endphp
+                                @if ($unreadCount > 0)
+                                    <span class="badge badge-danger badge-counter">{{ $unreadCount }}</span>
+                                @endif
+                            </a>
+
+                            <!-- Dropdown Notifikasi -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">Notifikasi</h6>
+
+                                @foreach(auth()->user()->unreadNotifications->take(5) as $notification)
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('notifications.read', $notification->id) }}">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-primary">
+                                                <i class="fas fa-file-alt text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
+                                            <span class="font-weight-bold">{{ $notification->data['message'] }}</span>
+                                        </div>
+                                    </a>
+                                @endforeach
+
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Lihat Semua Notifikasi</a>
+                            </div>
+                        </li>
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span
-                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('assets') }}/img/undraw_profile.svg">
                             </a>
@@ -195,6 +229,7 @@
                     </ul>
 
                 </nav>
+
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->

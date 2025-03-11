@@ -761,7 +761,7 @@
     </footer><!-- End Footer -->
 
 
-    <a href="https://wa.me/62XXXXXXXXXX?text=Halo, saya ingin memesan..." class="whatsapp-floating" target="_blank">
+    <a href="https://wa.me/081243934985?text=Halo Punggawa Digital" class="whatsapp-floating" target="_blank">
         <i class="bx bxl-whatsapp"></i> Order via WhatsApp
     </a>
 
