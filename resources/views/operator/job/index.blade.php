@@ -26,7 +26,16 @@
 @endsection
 
 @section('content')
-    <h1 class="h3 mb-4 text-gray-800">Management Job</h1>
+    <h1 class="h3 mb-2 text-gray-800">Management Job</h1>
+
+    <div class="mb-4">
+        <span class="badge badge-pill badge-light border mr-2">
+            <i class="fas fa-arrow-up text-danger"></i> Prioritas Tinggi
+        </span>
+        <span class="badge badge-pill badge-light border">
+            <i class="fas fa-arrow-right text-warning"></i> Prioritas Biasa
+        </span>
+    </div>
 
     <div class="row">
         <div class="col-md-6 mb-4">
@@ -37,10 +46,36 @@
                 <div class="card-body sortable job-list" id="pending">
                     @foreach ($pendingJobs as $item)
                         <div class="card mb-2" data-id="{{ $item->id }}">
-                            <div class="card-body job-card">
-                                <p class="card-text"><b>{{ $item->order->order_number }}</b> - {{ $item->order->name }}<i
-                                        class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon"></i>
-                                </p>
+                            <div class="card mb-2 shadow-sm border rounded-lg" data-id="{{ $item->id }}">
+                                <div class="card-body job-card p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Ikon Prioritas -->
+                                        <i
+                                            class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon mr-3"></i>
+
+                                        <!-- Info Order -->
+                                        <div class="flex-grow-1">
+                                            <span class="font-weight-bold">{{ $item->order->order_number }}</span>
+                                            <small class="text-muted">- {{ $item->order->name }}</small>
+                                        </div>
+
+                                        <!-- Tombol Aksi -->
+                                        @if ($item->order->path_file)
+                                            <div class="ml-2 d-flex align-items-center">
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    target="_blank" class="btn btn-sm btn-light border mr-1"
+                                                    title="Lihat Gambar">
+                                                    <i class="fas fa-eye text-primary"></i>
+                                                </a>
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    download class="btn btn-sm btn-light border" title="Download Gambar">
+                                                    <i class="fas fa-download text-success"></i>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -55,10 +90,36 @@
                 <div class="card-body sortable job-list" id="processing">
                     @foreach ($inProgressJobs as $item)
                         <div class="card mb-2" data-id="{{ $item->id }}">
-                            <div class="card-body job-card">
-                                <p class="card-text"><b>{{ $item->order->order_number }}</b> - {{ $item->order->name }}<i
-                                        class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon"></i>
-                                </p>
+                            <div class="card mb-2 shadow-sm border rounded-lg" data-id="{{ $item->id }}">
+                                <div class="card-body job-card p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Ikon Prioritas -->
+                                        <i
+                                            class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon mr-3"></i>
+
+                                        <!-- Info Order -->
+                                        <div class="flex-grow-1">
+                                            <span class="font-weight-bold">{{ $item->order->order_number }}</span>
+                                            <small class="text-muted">- {{ $item->order->name }}</small>
+                                        </div>
+
+                                        <!-- Tombol Aksi -->
+                                        @if ($item->order->path_file)
+                                            <div class="ml-2 d-flex align-items-center">
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    target="_blank" class="btn btn-sm btn-light border mr-1"
+                                                    title="Lihat Gambar">
+                                                    <i class="fas fa-eye text-primary"></i>
+                                                </a>
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    download class="btn btn-sm btn-light border" title="Download Gambar">
+                                                    <i class="fas fa-download text-success"></i>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -76,10 +137,36 @@
                 <div class="card-body sortable job-list" id="completed">
                     @foreach ($completedJobs as $item)
                         <div class="card mb-2" data-id="{{ $item->id }}">
-                            <div class="card-body job-card">
-                                <p class="card-text"><b>{{ $item->order->order_number }}</b> - {{ $item->order->name }}<i
-                                        class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon"></i>
-                                </p>
+                            <div class="card mb-2 shadow-sm border rounded-lg" data-id="{{ $item->id }}">
+                                <div class="card-body job-card p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Ikon Prioritas -->
+                                        <i
+                                            class="fas fa-arrow-{{ $item->priority == 'primary' ? 'up text-danger' : 'right text-warning' }} priority-icon mr-3"></i>
+
+                                        <!-- Info Order -->
+                                        <div class="flex-grow-1">
+                                            <span class="font-weight-bold">{{ $item->order->order_number }}</span>
+                                            <small class="text-muted">- {{ $item->order->name }}</small>
+                                        </div>
+
+                                        <!-- Tombol Aksi -->
+                                        @if ($item->order->path_file)
+                                            <div class="ml-2 d-flex align-items-center">
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    target="_blank" class="btn btn-sm btn-light border mr-1"
+                                                    title="Lihat Gambar">
+                                                    <i class="fas fa-eye text-primary"></i>
+                                                </a>
+                                                <a href="{{ asset('storage/images/orders/' . $item->order->path_file) }}"
+                                                    download class="btn btn-sm btn-light border" title="Download Gambar">
+                                                    <i class="fas fa-download text-success"></i>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -182,7 +269,7 @@
                             $('#jobModalLabel').text(response.order.order_number);
                             $('#jobModalLabel').append(
                                 ` <i class="fas fa-arrow-${response.priority == 'primary' ? 'up text-danger' : 'right text-warning'} priority-icon"></i>`
-                                );
+                            );
 
                             $('#jobDetailsList').empty();
 

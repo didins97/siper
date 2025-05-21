@@ -74,6 +74,24 @@
                     <p><b>Perkiraan Selesai :</b> {{ Carbon\Carbon::parse($order->expected_date)->format('d F Y') }}</p>
                     <hr>
                     <p><b>Catatan:</b> {{ $order->notes }}</p>
+                    @if ($order->path_file)
+                        <hr>
+                        <p><b>Gambar Desain:</b></p>
+                        <div class="text-center mb-3">
+                            <img src="{{ asset('storage/images/orders/' . $order->path_file) }}" alt="Gambar Desain"
+                                class="img-thumbnail shadow" style="max-width: 300px;">
+                        </div>
+                        <div class="text-center">
+                            <a href="{{ asset('storage/images/orders/' . $order->path_file) }}" target="_blank"
+                                class="btn btn-outline-primary btn-sm mr-2">
+                                <i class="fas fa-eye"></i> Lihat Gambar
+                            </a>
+                            <a href="{{ asset('storage/images/orders/' . $order->path_file) }}" download
+                                class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-download"></i> Download Gambar
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
