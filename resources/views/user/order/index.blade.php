@@ -46,6 +46,10 @@
                                             <span class="badge badge-primary">Dalam Proses</span>
                                         @break
 
+                                        @case('menunggu_pembayaran')
+                                            <span class="badge badge-secondary">Menunggu Pembayaran</span>
+                                        @break
+
                                         @default
                                     @endswitch
                                 </td>

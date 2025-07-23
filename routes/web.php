@@ -98,6 +98,8 @@ Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
 
     Route::put('/profile/{id}', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('user.profile.update');
     Route::put('/password/{id}', [App\Http\Controllers\UserController::class, 'updatePassword'])->name('user.password.update');
+
+    Route::post('/orders/upload-payment/{id}', [App\Http\Controllers\OrderController::class, 'uploadPayment'])->name('user.orders.upload-payment');
 });
 
 Route::get('/notifications/read/{id}', function ($id) {

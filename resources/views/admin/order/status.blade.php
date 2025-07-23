@@ -19,6 +19,7 @@
                             <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Selesai</option>
                             <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                             <option value="inprogress" {{ $order->status == 'inprogress' ? 'selected' : '' }}>Proses</option>
+                            <option value="menunggu_pembayaran" {{ $order->status == 'menunggu_pembayaran' ? 'selected' : '' }}>Menunggu Pembayaran</option>
                         </select>
                     </div>
 

@@ -82,7 +82,7 @@ class ProductController extends Controller
             'desc' => $request->desc,
             'image' => $image,
             'category_id' => $request->category_id,
-            'is_custom' => $request->is_custom,
+            'is_custom' => isset($request->is_custom) ? 1 : 0,
             'price_per_size' => $request->price_per_size ? $request->price_per_size : null
         ];
 

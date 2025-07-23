@@ -183,4 +183,31 @@ class OrderController extends Controller
     {
         return exportTo(new OrdersExport, 'Excel', 'orders');
     }
+
+    public function uploadPayment(Request $request, $id)
+    {
+        $request->validate([
+            'payment_proof' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $order = \App\Models\Order::find($id);
+
+        if ($request->hasFile('payment_proof')) {
+            $path = $request->file('payment_proof')->store('payments', 'public');
+            $order->update([
+                'payment_proof' => $path,
+                'status' => 'pending' // Change status to pending verification
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bukti pembayaran berhasil diupload'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal mengupload bukti pembayaran'
+        ], 400);
+    }
 }
