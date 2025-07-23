@@ -88,7 +88,7 @@ $(document).on('click', '.edit', function (e) {
         type: "GET",
         url: `/admin/products/${id}/edit`,
         success: function (response) {
-            // console.log(response);
+            console.log(response);
             $('#Editname').val(response.name);
             $('#Editprice').val(response.price);
             $('#Editstock').val(response.stock);
@@ -102,6 +102,8 @@ $(document).on('click', '.edit', function (e) {
 
             $('#Editcategory').val(response.category_id);
 
+            // console.log(response.is_custom);
+
             if (response.is_custom === 1) {
                 $('#EditStandardSizeForm').hide();
                 $('#EditCustomSizeForm').show();
@@ -112,11 +114,22 @@ $(document).on('click', '.edit', function (e) {
                 $('#EditStandardSizeForm').show();
                 $('#EditCustomSizeForm').hide();
                 // Populate sizes and prices if needed
+
+                $('#EditIsCustom').prop('checked', false);
+                $('#EditPricePerSize').val('');
             }
 
             // Dekode JSON sizes dan prices menjadi array
-            var sizesArray = JSON.parse(response.sizes);
-            var pricesArray = JSON.parse(response.prices);
+            // var sizesArray = JSON.parse(response.sizes);
+            // var pricesArray = JSON.parse(response.prices);
+
+            if (response.sizes === null && response.prices === null) {
+                var sizesArray = null;
+                var pricesArray = null;
+            } else {
+                var sizesArray = JSON.parse(response.sizes);
+                var pricesArray = JSON.parse(response.prices);
+            }
 
             $('#EditdynamicForm').empty();
 
@@ -148,6 +161,26 @@ $(document).on('click', '.edit', function (e) {
 
                     formCounterEdit = i + 1;
                 }
+            } else {
+                // Menambahkan form dinamis dengan data ukuran dan harga
+                var dynamicFormHtml = `
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="size">Ukuran</label>
+                            <input type="text" class="form-control" id="size" name="sizes[]">
+                        </div>
+                        <div class="form-group col">
+                            <label for="price">Harga</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" id="price" name="prices[]">
+                                <span class="input-group-append">
+                                    <button type="button" class="btn btn-success btn-multiple-edit btn-flat"><i class="fas fa-plus"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $('#EditdynamicForm').append(dynamicFormHtml);
             }
 
         }

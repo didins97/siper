@@ -115,3 +115,12 @@ Route::get('/notifications/read/{id}', function ($id) {
     }
 
 })->name('notifications.read');
+
+Route::get('/notifications/read-all', function () {
+    $user = auth()->user();
+
+    $user->unreadNotifications->markAsRead();
+
+    return back()->with('success', 'Semua notifikasi telah dibaca.');
+})->name('notifications.readAll');
+

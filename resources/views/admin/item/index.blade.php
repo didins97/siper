@@ -57,12 +57,15 @@
                                     </sup>
                                 </td>
                                 <td>
-                                    @if ($item->image == 'noimage.jpg')
-                                        <img src="{{ asset('assets/img/' . $item->image) }}" width="100" />
-                                    @else
-                                        <img src="{{ asset('storage/images/products/' . $item->image) }}" width="100" />
-                                    @endif
-                                    {{-- <img src="{{$item->image}}" width="100" /> --}}
+
+                                    @php
+                                        $imagePath = public_path('storage/images/products/' . $item->image);
+                                        $imageUrl = \Illuminate\Support\Facades\File::exists($imagePath)
+                                            ? asset('storage/images/products/' . $item->image)
+                                            : asset('assets/img/noimage.jpg');
+                                    @endphp
+
+                                    <img src="{{ $imageUrl }}" width="100" />
                                 </td>
                                 <td>
                                     <a href="javascript:void(0)" class="btn btn-danger btn-circle delete"
@@ -108,34 +111,34 @@
 
     <script>
         $('.delete').click(function(e) {
-                e.preventDefault();
-                var id = $(this).data('id');
-                Swal.fire({
-                    title: 'Apa anda yakin untuk menghapus ini?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#6777ef',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'DELETE',
-                            url: `/admin/products/${id}`,
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(results) {
-                                if (results.success === true) {
-                                    Swal.fire("Done!", results.message, "success");
-                                    location.reload();
-                                } else {
-                                    Swal.fire("Error!", results.message, "error");
-                                }
+            e.preventDefault();
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Apa anda yakin untuk menghapus ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#6777ef',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: `/admin/products/${id}`,
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(results) {
+                            if (results.success === true) {
+                                Swal.fire("Done!", results.message, "success");
+                                location.reload();
+                            } else {
+                                Swal.fire("Error!", results.message, "error");
                             }
-                        });
-                    }
-                })
+                        }
+                    });
+                }
             })
+        })
     </script>
 @endpush

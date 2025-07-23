@@ -104,7 +104,8 @@
             </div>
 
             @if (auth()->user()->role == 'admin' || auth()->user()->role == 'user')
-                <li class="nav-item {{ Request::segment(2) == 'orders' || Request::segment(2) == 'choose-items' ? 'active' : '' }}">
+                <li
+                    class="nav-item {{ Request::segment(2) == 'orders' || Request::segment(2) == 'choose-items' ? 'active' : '' }}">
                     <a class="nav-link"
                         href="{{ auth()->user()->role == 'admin' ? route('admin.orders.index') : route('user.orders.index') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
@@ -128,7 +129,7 @@
                     Laporan
                 </div>
 
-                <li class="nav-item {{ Request::segment(2) == 'reports' ? 'active' : ''}}">
+                <li class="nav-item {{ Request::segment(2) == 'reports' ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('admin.reports.index') }}">
                         <i class="fas fa-fw fa-chart-area"></i>
                         <span>Laporan</span></a>
@@ -170,35 +171,42 @@
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter Notifikasi -->
                                 @php $unreadCount = auth()->user()->unreadNotifications->count(); @endphp
                                 @if ($unreadCount > 0)
                                     <span class="badge badge-danger badge-counter">{{ $unreadCount }}</span>
                                 @endif
                             </a>
 
-                            <!-- Dropdown Notifikasi -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">Notifikasi</h6>
 
-                                @foreach(auth()->user()->unreadNotifications->take(5) as $notification)
-                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('notifications.read', $notification->id) }}">
+                                @forelse(auth()->user()->unreadNotifications->take(5) as $notification)
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{{ route('notifications.read', $notification->id) }}">
                                         <div class="mr-3">
                                             <div class="icon-circle bg-primary">
                                                 <i class="fas fa-file-alt text-white"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="small text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
+                                            <div class="small text-gray-500">
+                                                {{ $notification->created_at->diffForHumans() }}</div>
                                             <span class="font-weight-bold">{{ $notification->data['message'] }}</span>
                                         </div>
                                     </a>
-                                @endforeach
+                                @empty
+                                    <span class="dropdown-item text-center text-muted">Tidak ada notifikasi baru</span>
+                                @endforelse
 
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Lihat Semua Notifikasi</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-center text-primary small"
+                                    href="{{ route('notifications.readAll') }}">
+                                    Tandai semua telah dibaca
+                                </a>
                             </div>
                         </li>
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -206,7 +214,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{{ asset('assets') }}/img/undraw_profile.svg">
                             </a>

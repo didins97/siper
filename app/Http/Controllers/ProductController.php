@@ -71,6 +71,8 @@ class ProductController extends Controller
             // 'sizes' => 'required',
         ]);
 
+        // dd($request->all());
+
         $image = upload_file('app/public/images/products', $request->file('image'));
 
         $data = [
@@ -124,20 +126,25 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'prices' => 'required',
-            'sizes' => 'required',
+            // 'prices' => 'required',
+            // 'sizes' => 'required',
         ]);
+
+        // dd($request->all());
 
         $data = [
             'name' => $request->name,
             'category_id' => $request->category_id,
-            'prices' => $request->is_custom ? null : json_encode($request->prices),
+            // 'prices' => $request->prices ? json_encode($request->prices) : null,
+            // 'sizes' => $request->sizes ? json_encode($request->sizes) : null,
             'sizes' => $request->is_custom ? null : json_encode($request->sizes),
+            'prices' => $request->is_custom ? null : json_encode($request->prices),
             'price_per_size' => $request->price_per_size ? $request->price_per_size : null,
             'desc' => $request->desc,
             'image' => $request->hasFile('image') ? upload_file('app/public/images/products', $request->file('image')) : $product->image,
             'is_active' => $request->is_active ? 1 : 0,
-            'is_featured' => $request->is_featured ? 1 : 0
+            'is_featured' => $request->is_featured ? 1 : 0,
+            'is_custom' => isset($request->is_custom) ? 1 : 0
         ];
 
         $product->update($data);

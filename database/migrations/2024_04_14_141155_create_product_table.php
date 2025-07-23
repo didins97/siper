@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name', 25);
             $table->text('desc');
             $table->string('image', 255);
-            $table->json('sizes');
-            $table->json('prices');
+            $table->json('sizes')->nullable();
+            $table->json('prices')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

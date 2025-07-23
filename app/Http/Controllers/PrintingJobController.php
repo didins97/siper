@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\PrintingJobExport;
 use App\Models\PrintingJob;
+use App\Notifications\OrderStatusNotification;
 use Illuminate\Http\Request;
 
 class PrintingJobController extends Controller
@@ -29,6 +30,10 @@ class PrintingJobController extends Controller
         $job = PrintingJob::find($id);
         $job->status = $request->status;
         $job->save();
+
+        $order = $job->order;
+        $user = \App\Models\User::find($order->user_id);
+        $user->notify(new OrderStatusNotification($order));
 
         return response()->json([
             'message' => 'Status updated successfully',

@@ -81,15 +81,21 @@
                 <div class="carousel-inner" role="listbox">
 
                     <!-- Slide 1 -->
-                    <div class="carousel-item active" style="background-image: url({{ asset('FE') }}/img/slide/slide-1.jpg);">
+                    <div class="carousel-item active"
+                        style="background-image: url({{ asset('FE') }}/img/slide/slide-1.jpg);">
                         <div class="carousel-container">
                             <div class="carousel-content">
-                                <h2 class="animate__animated animate__fadeInDown">Selamat Datang Di <span>Punggawa Digital Printing</span></h2>
-                                <p class="animate__animated animate__fadeInUp">Punggawa Digital Printing adalah solusi terbaik untuk semua kebutuhan cetak Anda. Kami menyediakan layanan cetak berkualitas tinggi dengan harga terjangkau.</p>
+                                <h2 class="animate__animated animate__fadeInDown">Selamat Datang Di <span>Punggawa
+                                        Digital Printing</span></h2>
+                                <p class="animate__animated animate__fadeInUp">Punggawa Digital Printing adalah solusi
+                                    terbaik untuk semua kebutuhan cetak Anda. Kami menyediakan layanan cetak berkualitas
+                                    tinggi dengan harga terjangkau.</p>
 
-                                @if(!Auth::check())
-                                    <a href="{{ route('register') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
-                                    <a href="{{ route('login') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
+                                @if (!Auth::check())
+                                    <a href="{{ route('register') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
+                                    <a href="{{ route('login') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
                                 @else
                                     <a href="
                                     @switch(auth()->user()->role)
@@ -105,22 +111,27 @@
                                         @default
                                             {{ route('user.dashboard') }}
                                     @endswitch
-                                    " class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
+                                    "
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
                                 @endif
                             </div>
                         </div>
                     </div>
 
                     <!-- Slide 2 -->
-                    <div class="carousel-item" style="background-image: url({{ asset('FE') }}/img/slide/slide-2.jpg);">
+                    <div class="carousel-item"
+                        style="background-image: url({{ asset('FE') }}/img/slide/slide-2.jpg);">
                         <div class="carousel-container">
                             <div class="carousel-content">
                                 <h2 class="animate__animated animate__fadeInDown">Keunggulan Layanan Kami</h2>
-                                <p class="animate__animated animate__fadeInUp">Kami menawarkan layanan cetak dengan kualitas terbaik, kecepatan pengerjaan, dan harga yang kompetitif.</p>
+                                <p class="animate__animated animate__fadeInUp">Kami menawarkan layanan cetak dengan
+                                    kualitas terbaik, kecepatan pengerjaan, dan harga yang kompetitif.</p>
 
-                                @if(!Auth::check())
-                                    <a href="{{ route('register') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
-                                    <a href="{{ route('login') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
+                                @if (!Auth::check())
+                                    <a href="{{ route('register') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
+                                    <a href="{{ route('login') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
                                 @else
                                     <a href="
                                     @switch(auth()->user()->role)
@@ -136,22 +147,27 @@
                                         @default
                                             {{ route('user.dashboard') }}
                                     @endswitch
-                                    " class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
+                                    "
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
                                 @endif
                             </div>
                         </div>
                     </div>
 
                     <!-- Slide 3 -->
-                    <div class="carousel-item" style="background-image: url({{ asset('FE') }}/img/slide/slide-3.jpg);">
+                    <div class="carousel-item"
+                        style="background-image: url({{ asset('FE') }}/img/slide/slide-3.jpg);">
                         <div class="carousel-container">
                             <div class="carousel-content">
                                 <h2 class="animate__animated animate__fadeInDown">Solusi Cetak Terlengkap</h2>
-                                <p class="animate__animated animate__fadeInUp">Dari cetak brosur hingga baliho, kami siap memenuhi kebutuhan cetak Anda dengan layanan profesional.</p>
+                                <p class="animate__animated animate__fadeInUp">Dari cetak brosur hingga baliho, kami
+                                    siap memenuhi kebutuhan cetak Anda dengan layanan profesional.</p>
 
-                                @if(!Auth::check())
-                                    <a href="{{ route('register') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
-                                    <a href="{{ route('login') }}" class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
+                                @if (!Auth::check())
+                                    <a href="{{ route('register') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Daftar</a>
+                                    <a href="{{ route('login') }}"
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Masuk</a>
                                 @else
                                     <a href="
                                     @switch(auth()->user()->role)
@@ -167,7 +183,8 @@
                                         @default
                                             {{ route('user.dashboard') }}
                                     @endswitch
-                                    " class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
+                                    "
+                                        class="btn-get-started animate__animated animate__fadeInUp scrollto">Dashboard</a>
                                 @endif
                             </div>
                         </div>
@@ -495,15 +512,24 @@
                     @foreach ($featuredProduct as $item)
                         <div class="col-lg-4 col-md-6 portfolio-item filter-poster">
                             <div class="portfolio-wrap">
-                                <img src="{{ asset('storage/images/products/' . $item->image) }}" class="img-fluid" alt="Poster">
+                                @php
+                                    $imagePath = public_path('storage/images/products/' . $item->image);
+                                    $imageUrl = $imageUrl = \Illuminate\Support\Facades\File::exists($imagePath)
+                                        ? asset('storage/images/products/' . $item->image)
+                                        : asset('assets/img/noimage.jpg');
+                                @endphp
+                                <img src="{{ $imageUrl }}" class="img-fluid"
+                                    alt="Poster">
                                 <div class="portfolio-info">
                                     <h4>{{ $item->name }}</h4>
                                     <p>{{ $item->desc }}</p>
                                 </div>
                                 <div class="portfolio-links">
-                                    <a href="{{ asset('storage/images/products/' . $item->image) }}" data-gallery="portfolioGallery"
-                                        class="portfolio-lightbox" title="Poster Promosi"><i class="bx bx-plus"></i></a>
-                                    <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                                    <a href="{{ $imageUrl }}"
+                                        data-gallery="portfolioGallery" class="portfolio-lightbox"
+                                        title="Poster Promosi"><i class="bx bx-plus"></i></a>
+                                    <a href="portfolio-details.html" title="More Details"><i
+                                            class="bx bx-link"></i></a>
                                 </div>
                             </div>
                         </div>

@@ -14,13 +14,24 @@
                 <!-- Product Image -->
                 <div class="col-lg-5 col-xl-4">
                     <div class="p-4 h-100 d-flex align-items-center justify-content-center bg-light">
-                        @if ($product->image != 'noimage.jpg')
+                        {{-- @if ($product->image != 'noimage.jpg')
                             <img class="img-fluid rounded-3" src="{{ asset('storage/images/products/' . $product->image) }}"
                                 alt="{{ $product->name }}" style="max-height: 400px; object-fit: contain;">
                         @else
                             <img class="img-fluid rounded-3" src="{{ asset('assets/img/' . $product->image) }}"
                                 alt="{{ $product->name }}" style="max-height: 400px; object-fit: contain;">
-                        @endif
+                        @endif --}}
+
+                        @php
+                            $imagePath = public_path('storage/images/products/' . $product->image);
+                            $imageUrl =
+                                $imageUrl = \Illuminate\Support\Facades\File::exists($imagePath)
+                                    ? asset('storage/images/products/' . $product->image)
+                                    : asset('assets/img/noimage.jpg');
+                        @endphp
+
+                        <img class="img-fluid rounded-3" src="{{ $imageUrl }}"
+                                alt="{{ $product->name }}" style="max-height: 400px; object-fit: contain;">
                     </div>
                 </div>
 

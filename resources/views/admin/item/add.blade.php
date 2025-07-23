@@ -30,7 +30,7 @@
 
                     <!-- Custom Size Toggle -->
                     <div class="custom-control custom-switch mb-3">
-                        <input type="checkbox" class="custom-control-input" id="isCustom" name="is_custom">
+                        <input type="checkbox" class="custom-control-input" id="isCustom" name="is_custom" value="1">
                         <label class="custom-control-label" for="isCustom">Ukuran Custom</label>
                         <small class="form-text text-muted">Centang jika produk memiliki ukuran custom</small>
                     </div>
