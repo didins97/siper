@@ -10,6 +10,8 @@
             <form action="" method="POST" enctype="multipart/form-data" id="OrderForm">
                 @csrf
                 <div class="modal-body">
+                    <input type="number" id="priceRaw" name="total_amount" hidden>
+                    <input type="number" id="price" name="price" hidden>
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -28,16 +30,42 @@
                         <label for="phone">No Hp</label>
                         <input type="text" class="form-control" id="phone" name="phone">
                     </div>
-                    <div class="form-group">
-                        <label for="sizeOption">Pilih ukuran:</label>
-                        <div id="sizeOptionsContainer">
+
+                    <!-- Standard Size Options -->
+                    <div id="standardSizeSection">
+                        <div class="form-group">
+                            <label for="sizeOption">Pilih ukuran:</label>
+                            <div id="sizeOptionsContainer"></div>
                         </div>
                     </div>
+
+                    <!-- Custom Size Input -->
+                    <div id="customSizeSection" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="customSize">Ukuran Custom (cm)</label>
+                                    <input type="text" class="form-control" id="customSize" name="custom_size" placeholder="Contoh: 30x40">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Harga per cm²</label>
+                                    <input type="text" class="form-control" id="pricePerSize" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Harga</label>
+                            <input type="text" class="form-control" id="customTotalPrice" name="custom_price" readonly>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
                                 <label for="Qty">Jumlah</label>
-                                <input type="number" class="form-control" id="Qty" name="qty">
+                                <input type="number" class="form-control" id="Qty" name="qty" min="1">
                             </div>
                         </div>
                         <div class="col">
@@ -79,3 +107,18 @@
         </div>
     </div>
 </div>
+
+{{-- <script>
+$(document).ready(function() {
+    // Toggle between file upload and URL input
+    $('input[name="imageOption"]').change(function() {
+        if ($(this).val() === 'upload') {
+            $('#fileInputSection').show();
+            $('#urlInputSection').hide();
+        } else {
+            $('#fileInputSection').hide();
+            $('#urlInputSection').show();
+        }
+    });
+});
+</script> --}}

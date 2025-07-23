@@ -18,31 +18,67 @@
                         <label for="description">Deskripsi</label>
                         <textarea class="form-control" id="description" rows="3" name="desc"></textarea>
                     </div>
-                    <div id="dynamicForm">
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label for="size">Ukuran</label>
-                                <input type="text" class="form-control" id="size" name="sizes[]">
-                            </div>
-                            <div class="form-group col">
-                                <label for="price">Harga</label>
-                                <div class="input-group mb-3">
-                                    <input type="number" class="form-control" id="price" name="prices[]">
-                                    <span class="input-group-append">
-                                        <button type="button" class="btn btn-success btn-flat btn-multiple"><i
-                                                class="fas fa-plus"></i></button>
-                                    </span>
+                    <div class="form-group">
+                        <label for="category">Kategori</label>
+                        <select class="form-control" id="category" name="category_id" required>
+                            <option value="" disabled selected>Pilih kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Custom Size Toggle -->
+                    <div class="custom-control custom-switch mb-3">
+                        <input type="checkbox" class="custom-control-input" id="isCustom" name="is_custom">
+                        <label class="custom-control-label" for="isCustom">Ukuran Custom</label>
+                        <small class="form-text text-muted">Centang jika produk memiliki ukuran custom</small>
+                    </div>
+
+                    <!-- Standard Size & Price (Hidden when custom is checked) -->
+                    <div id="standardSizeForm">
+                        <div id="dynamicForm">
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="size">Ukuran</label>
+                                    <input type="text" class="form-control" id="size" name="sizes[]">
+                                </div>
+                                <div class="form-group col">
+                                    <label for="price">Harga</label>
+                                    <div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="price" name="prices[]">
+                                        <span class="input-group-append">
+                                            <button type="button" class="btn btn-success btn-flat btn-multiple"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <h6>Panduan Tambah Ukuran & Harga</h6>
+                            <ol>
+                                <li>Ukuran di isi dengan format text <b>cth : 30 x 40</b></li>
+                                <li>Harga di isi dengan angka</li>
+                            </ol>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <h6>Panduan Tambah Ukuran & Harga</h6>
-                        <ol>
-                            <li>Ukuran di isi dengan format text <b>cth : 30 x 40</b></li>
-                            <li>Harga di isi dengan angka</li>
-                        </ol>
+
+                    <!-- Custom Price per Size (Shown when custom is checked) -->
+                    <div id="customSizeForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="pricePerSize">Harga per cm<sup>2</sup></label>
+                            <input type="number" class="form-control" id="pricePerSize" name="price_per_size" placeholder="Masukkan harga per cm persegi">
+                        </div>
+                        <div class="mb-3">
+                            <h6>Panduan Harga Custom</h6>
+                            <ol>
+                                <li>Harga akan dihitung berdasarkan luas (panjang x lebar) dikali harga per cm<sup>2</sup></li>
+                                <li>Contoh: Ukuran 30x40cm dengan harga Rp100 = 30x40x100 = Rp120.000</li>
+                            </ol>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <div class="mb-4">
                             <label for="uploadThumbnail" class="form-label">Thumbnail</label>

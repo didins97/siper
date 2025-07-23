@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\PrintingJob;
 use Illuminate\Http\Request;
 use App\Exports\OrdersExport;
+use App\Models\Product;
 use App\Notifications\OrderShippedNotification;
 use App\Notifications\OrderStatusNotification;
 use App\Notifications\OrderWhatshappNotfication;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
@@ -43,46 +45,51 @@ class OrderController extends Controller
 
     public function createOrder(Request $request, $id)
     {
-        // $request->validate([
-        //     'name' => 'required',
-        //     'email' => 'required',
-        //     'phone' => 'required',
-        //     'notes' => 'string',
-        //     'size' => 'required',
-        //     'price' => 'required',
-        //     'qty' => 'required',
-        //     'date_expected' => 'required',
-        // ]);
+        // Ambil data request kecuali beberapa field custom
+        $data = $request->except('imageOption', 'custom_size', 'custom_price');
 
-        $data = $request->except('imageOption');
+        // dd($data);
 
+        // $item = Product::find($id);
+
+        // Upload file jika ada
         if ($request->hasFile('path_file')) {
-            $image = upload_file('app/public/images/orders', $request->file('path_file'));
-            $data['path_file'] = $image;
+            $data['path_file'] = upload_file('app/public/images/orders', $request->file('path_file'));
         }
 
-        $data['user_id'] = auth()->user()->id;
-        $data['product_id'] = $id;
-        $data['total_amount'] = $data['qty'] * $data['price'];
-        $data['status'] = 'pending';
-        $data['order_type'] = auth()->user()->role != 'user' ? 'offline' : 'online';
+        $user = auth()->user();
 
-        // run notification
-        // $request->user()->notify(new OrderWhatshappNotfication());
+        // Tambahan field penting
+        $data['user_id']     = $user->id;
+        $data['product_id']  = $id;
+        $data['size']        = isset($request->custom_size) ? $request->custom_size : $data['size'];
+        $data['order_type']  = $user->role !== 'user' ? 'offline' : 'online';
+        $data['status']      = 'pending';
 
+        // Normalisasi nilai harga & total
+        $price = (int) $data['price'] ?? 0;
+        $qty   = (int) $data['qty'] ?? 1;
+
+        // Hitung total_amount jika belum ada
+        $data['total_amount'] = $data['total_amount'] ?? $price * $qty;
+
+        // Isi price jika kosong, pakai total sebagai fallback
+        // $data['price'] = $price > 0 ? $price : $data['total_amount'];
+
+        // Simpan order
         $order = \App\Models\Order::create($data);
 
-        $admin = \App\Models\User::where('role', 'admin')->get();
-        foreach ($admin as $user) {
-            $user->notify(new OrderShippedNotification($order));
+        // Kirim notifikasi ke admin
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $admin->notify(new OrderShippedNotification($order));
         }
 
-        if (auth()->user()->role == 'user') {
-            return redirect()->route('user.orders.show', $order->id);
-        } else {
-            return redirect()->route('admin.orders.show', $order->id);
-        }
+        // Redirect sesuai role
+        $route = $user->role === 'user' ? 'user.orders.show' : 'admin.orders.show';
+        return redirect()->route($route, $order->id);
     }
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -130,17 +137,40 @@ class OrderController extends Controller
     public function cancel($id)
     {
         $order = \App\Models\Order::find($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order tidak ditemukan.',
+                'success' => false
+            ], 404);
+        }
+
+        // Cek apakah sudah lebih dari 24 jam
+        $createdAt = Carbon::parse($order->created_at);
+        if (Carbon::now()->diffInHours($createdAt) > 24) {
+            return response()->json([
+                'message' => 'Order tidak dapat dibatalkan karena sudah lebih dari 24 jam.',
+                'success' => false
+            ]);
+        }
+
+        // Update status order
         $order->status = 'cancelled';
         $order->save();
 
+        // Update status job jika ada
         $job = \App\Models\PrintingJob::where('order_id', $id)->first();
         if ($job) {
             $job->status = 'cancelled';
             $job->save();
         }
 
-        return redirect()->back();
+        return response()->json([
+            'message' => 'Order berhasil dibatalkan.',
+            'success' => true
+        ]);
     }
+
 
     public function exportToPDF()
     {

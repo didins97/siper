@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\ProductsExport;
+use App\Models\Category;
 use PDF;
 
 class ProductController extends Controller
@@ -17,17 +18,31 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $categories = Category::all();
+
         $user = $request->user();
         $query = Product::orderBy('created_at', 'desc');
 
         if ($user->isAdmin()) {
             $data = $query->get();
-            return view('admin.item.index', compact('data'));
+            return view('admin.item.index', compact('data', 'categories'));
         }
 
         // user is not admin
         $data = $query->where('is_active', true)->get();
-        return view('user.item.index', compact('data'));
+        // return view('user.item.index', compact('data', 'categories'));
+
+        return view('user.item.category', compact('categories', 'data'));
+    }
+
+    public function getProductsByCategory(Request $request, $id)
+    {
+        $query = Product::orderBy('created_at', 'desc');
+        $data = $query->where('category_id', $id)->where('is_active', true)->get();
+
+        $desc = "Kami melayani berbagai kebutuhan cetak Anda, baik untuk keperluan indoor maupun outdoor, dengan kualitas terbaik dan harga bersaing.";
+
+        return view('user.item.index', compact('data', 'desc'));
     }
 
     /**
@@ -51,19 +66,22 @@ class ProductController extends Controller
         // dd($request->all());
         $request->validate([
             'name' => 'required',
-            'prices' => 'required',
+            // 'prices' => 'required',
             'image' => 'required|image',
-            'sizes' => 'required',
+            // 'sizes' => 'required',
         ]);
 
         $image = upload_file('app/public/images/products', $request->file('image'));
 
         $data = [
             'name' => $request->name,
-            'prices' => json_encode($request->prices),
-            'sizes' => json_encode($request->sizes),
+            'prices' => $request->prices ? json_encode($request->prices) : null,
+            'sizes' => $request->sizes ? json_encode($request->sizes) : null,
             'desc' => $request->desc,
             'image' => $image,
+            'category_id' => $request->category_id,
+            'is_custom' => $request->is_custom,
+            'price_per_size' => $request->price_per_size ? $request->price_per_size : null
         ];
 
         Product::create($data);
@@ -112,8 +130,10 @@ class ProductController extends Controller
 
         $data = [
             'name' => $request->name,
-            'prices' => json_encode($request->prices),
-            'sizes' => json_encode($request->sizes),
+            'category_id' => $request->category_id,
+            'prices' => $request->is_custom ? null : json_encode($request->prices),
+            'sizes' => $request->is_custom ? null : json_encode($request->sizes),
+            'price_per_size' => $request->price_per_size ? $request->price_per_size : null,
             'desc' => $request->desc,
             'image' => $request->hasFile('image') ? upload_file('app/public/images/products', $request->file('image')) : $product->image,
             'is_active' => $request->is_active ? 1 : 0,
@@ -164,6 +184,8 @@ class ProductController extends Controller
         $data = [
             'sizes' => json_decode($product->sizes),
             'prices' => json_decode($product->prices),
+            'price_per_size' => $product->price_per_size,
+            'is_custom' => $product->is_custom
         ];
 
         return $data;

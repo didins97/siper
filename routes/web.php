@@ -86,6 +86,7 @@ Route::prefix('operator')->middleware(['auth', 'role:operator'])->group(function
 Route::prefix('user')->middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'userDashboard'])->name('user.dashboard');
 
+    Route::get('/items/kategori/{id}', [App\Http\Controllers\ProductController::class, 'getProductsByCategory'])->name('user.items.kategori');
     Route::get('/items', [App\Http\Controllers\ProductController::class, 'index'])->name('user.items.index');
     Route::get('/items/{id}', [App\Http\Controllers\ProductController::class, 'show'])->name('user.items.show');
     Route::get('/items/sizes-prices/{id}', [App\Http\Controllers\ProductController::class, 'GetSizesPrices'])->name('user.sizes-prices');
